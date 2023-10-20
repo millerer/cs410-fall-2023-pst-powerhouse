@@ -5,8 +5,6 @@ This document contains the proposed project and group for team **PST Powerhouse*
     
 Included is a list of members, what the project is, why the project was chosen, and the planned approach and time breakdown.
 
-<br>
-
 ## Group Information
 
 ### **Name:**
@@ -21,8 +19,6 @@ Included is a list of members, what the project is, why the project was chosen, 
 | Yong Yang             | yongy3@illinois.edu   |          |
 | Jayashree Ganesan     | ganesan8@illinois.edu |          |
 
-<br>
-
 ## Project Proposal and Outline
 
 ### **Project Topic:** 
@@ -31,7 +27,7 @@ Included is a list of members, what the project is, why the project was chosen, 
 ### **1. What is the task?** 
 The proposed task is to develop a video game recommendation tool which provides a list of titles based on a user’s query and the reviewer sentiment for each game (positive sentiment giving a higher weight).
 
-#### **2. Why is this important or interesting?**
+### **2. Why is this important or interesting?**
 Video games are a popular media form that, while widespread, doesn’t enjoy the systematized recommendation tools that music or movies do. This holds true for both projects in this class and in general (beyond recommendations based on purchase history).
 
 While review sites are plentiful, tools providing a personalized list of recommended games remain rare.  This is despite video games being the fastest growing media industry compared to television, movies, and music (*Schedy et al.*). 
@@ -72,8 +68,6 @@ Upon entering a query related to the domain of video games, users will receive a
 | Test and refine tool                                                  | 24                |
 | Prepare Presentation materials                                        | 16                |
 **TOTAL: 144 Hours**
-
-<br>
 
 ## Citations
 Schedy et al. “Game Changer: Accelerating the Media Industry’s Most Dynamic Sector”, Boston Consulting Group, June 09, 2023, https://www.bcg.com/publications/2023/drivers-of-global-gaming-industry-growth
