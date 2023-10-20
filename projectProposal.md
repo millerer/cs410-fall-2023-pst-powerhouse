@@ -43,7 +43,7 @@ Given the size of the industry and the large quantity of yearly releases (especi
 -	Test the output and refine as needed. 
 
 ### **4. What tools, systems, or datasets are involved?**
-Given the robust collection of reviews on the data source (Metacritic), we have decided to use [Kaggle datasets for Metacritic media reviews]("https://www.kaggle.com/datasets?search=metacritic").
+Given the robust collection of reviews on the data source (Metacritic), we have decided to use [Kaggle datasets for Metacritic media reviews](https://www.kaggle.com/datasets?search=metacritic).
 
 ### **5. What is the expected outcome?**
 Upon entering a query related to the domain of video games, users will receive a ranked listing of ‘k’ video game titles ranked on relevance to their query and then positive reviewer sentiment.
