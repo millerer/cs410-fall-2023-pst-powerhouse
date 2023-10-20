@@ -18,4 +18,4 @@ This is the group project repository for team PST Powerhouse.
 - ganesan8
 
 ### Project Proposal
-- See: projectProposal.md
+- See: [projectProposal.md](https://github.com/millerer/cs410-fall-2023-pst-powerhouse/blob/main/projectProposal.md)
