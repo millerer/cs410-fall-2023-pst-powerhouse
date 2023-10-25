@@ -1,6 +1,12 @@
 # CS410 Fall 2023 Project for Team PST Powerhouse
 This is the group project repository for team PST Powerhouse.
 
+### Project Topic
+- Free Topic
+
+### Project Content
+- Video Game Recommendation Tool
+
 ### Class
 - CS-410
 
