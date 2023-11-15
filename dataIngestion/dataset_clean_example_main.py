@@ -29,8 +29,17 @@ if __name__ == '__main__':
     review.review_text = review.review_text.astype('str')
 
     # word_cloud_show(review)
+    print("Shape before cleaning : " + str(review.shape))
 
     # Below code are to clean data.
-    nltk.download('stopwords')
+    #nltk.download('stopwords')
     cleaning(review, 'review_text')
+    # Drop the rows with too short review_text. Feel free to Change the minimum len, 1,  as you like.
+    review = review[review['review_text'].map(len) > 1]
+
+    # Print some samples
+    print("Shape after cleaning : " + str(review.shape))
     print(review[['review_text']].head(10))
+
+    print("Saving clean dataset to dataset.cleaned.csv")
+    review.to_csv('dataset.cleaned.csv')

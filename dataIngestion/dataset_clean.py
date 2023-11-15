@@ -78,6 +78,10 @@ def stemming(text):
     stem = ' '.join(stemmed_word)
     return stem
 
+def remove_EAR(x):
+    """ Remove those review with 'Early Access Review' only """
+    cleaned_string = re.sub(r"earl[iy] access review", '', x)
+    return cleaned_string
 
 def cleaning(df, review):
     """ Main cleaning function that combining all """
@@ -87,9 +91,10 @@ def cleaning(df, review):
     df[review] = df[review].apply(remove_num)
     df[review] = df[review].apply(remove_symbols)
     df[review] = df[review].apply(remove_punctuation)
-    df[review] = df[review].apply(remove_stopword)
+    #df[review] = df[review].apply(remove_stopword)
+    #df[review] = df[review].apply(stemming)
+    df[review] = df[review].apply(remove_EAR)
     df[review] = df[review].apply(unify_whitespaces)
-    df[review] = df[review].apply(stemming)
 
 
 
