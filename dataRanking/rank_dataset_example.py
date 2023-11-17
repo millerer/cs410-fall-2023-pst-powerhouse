@@ -17,6 +17,8 @@ if __name__ == '__main__':
     p = 0.02
     review = pandas.read_csv('../dataIngestion/dataset.csv', skiprows=lambda i: i > 0 and random.random() > p)
     review.review_text = review.review_text.astype('str')
+    nltk.download('stopwords')
+    cleaning(review, 'review_text')
 
     # Get the query
     query = sys.argv[1].lower()
@@ -25,5 +27,4 @@ if __name__ == '__main__':
     print("Ranking....")
     result = rank_dataset(review, query)
     print("Top 10 ranked reviews + title")
-    print(result[['review_text']].head(10))
-    print(result[['app_name']].head(10))
+    print(result.head(10))

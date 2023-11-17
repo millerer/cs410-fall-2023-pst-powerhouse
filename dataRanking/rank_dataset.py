@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from rank_bm25 import BM25Okapi
 
 
@@ -13,7 +14,6 @@ def rank_dataset(dataset, query):
     Returns:
         The dataset sorted by an additional 'rank' column in desc order
     """
-
     ## Tokenize the corpus
     tokenzied_corpus = [doc.split(" ") for doc in dataset.review_text]
 
@@ -31,4 +31,5 @@ def rank_dataset(dataset, query):
     df['rank'] = doc_scores
 
     # Return the dataset sorted by 'rank' in desc order
-    return df.sort_values(by='rank', ascending=False)
+    ranked_results = df.groupby(['app_name'], as_index=False).agg(rank=('rank', 'sum'))
+    return ranked_results.sort_values(by='rank', ascending=False)
