@@ -80,7 +80,7 @@ def stemming(text):
 
 def remove_EAR(x):
     """ Remove those review with 'Early Access Review' only """
-    cleaned_string = re.sub(r"earl[iy] access review", '', x)
+    cleaned_string = re.sub(r"earl[iy] access review", '', x, flags=re.IGNORECASE)
     return cleaned_string
 
 def cleaning(df, review):
