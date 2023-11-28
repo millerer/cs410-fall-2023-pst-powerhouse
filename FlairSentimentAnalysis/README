@@ -1,0 +1,8 @@
+# To predict sentiments for a list of game titles, use the predict_game_revies_sentiments.py script:
+
+python predict_game_revies_sentiments.py --titles [Comma separated list of games titles, eg: game1,game2...]
+    --input [input csv file of game reviews, use the raw dataset without any data cleaning applied]
+    - threads [number of threads to use, default = 4]
+    - sample [sample size to run sentiment analysis per game, default = 10]
+
+# Returned value: a dataframe consisting of the game titles given and their average sentiment value

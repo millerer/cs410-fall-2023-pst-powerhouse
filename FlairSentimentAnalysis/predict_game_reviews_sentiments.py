@@ -2,6 +2,10 @@ import pandas as pd
 from flair_predict import predict
 from concurrent.futures import ThreadPoolExecutor
 import argparse
+import sys
+
+sys.path.append('../')
+from dataIngestion.dataset_clean import remove_EAR
 
 def parallel_predict(text):
     return predict(text)
@@ -9,30 +13,50 @@ def parallel_predict(text):
 def calculate_avg_sentiment(group):
     return round(group['sentiment_score'].mean(), 3)
 
-def main(input_file, output_reviews_file, output_avg_sentiment_file, num_threads):
+def clean_game_reviews(df):
+    df['review_text'].fillna('', inplace=True)
+    df['review_text'] = df['review_text'].apply(remove_EAR) # Remove Early Access Review
+    df = df[df['review_text'].str.strip() != '']  # Remove all rows with empty review_text
+
+    return df
+
+def sample_reviews(group, N):
+    if len(group) > N:
+        return group.sample(N)
+    else:
+        return group
+
+def main(game_titles, input_file, num_threads, sample_size):
     df = pd.read_csv(input_file)
+
+    # Filter dataframe to include only the specified game titles
+    df = df[df['app_name'].isin(game_titles)]
+
+    # Clean game review texts
+    df = clean_game_reviews(df)
+
+    # Group by 'app_name' and apply the sampling function
+    sampled_df = df.groupby('app_name', group_keys=False).apply(lambda group: sample_reviews(group, sample_size))
 
     # Calculate sentiment scores using the predict() function
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
-         df['sentiment_score'] = list(executor.map(parallel_predict, df['review_text']))
-    df.to_csv(output_reviews_file, index=False)
+         sampled_df['sentiment_score'] = list(executor.map(parallel_predict, sampled_df['review_text']))
 
     # Calculate average sentiment scores for each game title
-    df_avg_sentiment = df.groupby('app_name').apply(calculate_avg_sentiment).reset_index()
+    df_avg_sentiment = sampled_df.groupby('app_name').apply(calculate_avg_sentiment).reset_index()
     df_avg_sentiment.columns = ['app_name', 'avg_sentiment']
 
-    # Output DataFrame with app_name and avg_sentiment for each game title
-    df_avg_sentiment.to_csv(output_avg_sentiment_file, index=False)
-
-    print(f"Sentiment analysis completed. Results saved to '{output_reviews_file}' and '{output_avg_sentiment_file}'.")
+    print(df_avg_sentiment)
+    return df_avg_sentiment
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Calculates sentiment score for each review of a game and calculates average score')
-    parser.add_argument('--input', dest='input_file', type=str, help='Input file path')
-    parser.add_argument('--output_reviews', dest='output_reviews_file', type=str, help='Output .csv file with all reviews and sentiment scores')
-    parser.add_argument('--output_avg', dest='output_avg_sentiment_file', type=str, help='Output .csv file with average sentiment scores for each game')
+    parser.add_argument('--titles', dest='game_titles', type=str, help='Comma separated list of games titles, eg: game1,game2...')
+    parser.add_argument('--input', dest='input_file', type=str, help='Input file containing game reviews')
     parser.add_argument('-threads', dest='num_threads', type=int, default=4, help='Number of threads')
+    parser.add_argument('-sample', dest='sample_size', type=int, default=10, help='Number of reviews per game to calculate sentiments')
     args = parser.parse_args()
 
-    main(args.input_file, args.output_reviews_file, args.output_avg_sentiment_file, args.num_threads)
+    game_titles = args.game_titles.split(',')
+    main(game_titles, args.input_file, args.num_threads, args.sample_size)
