@@ -91,7 +91,7 @@ def cleaning(df, review):
     df[review] = df[review].apply(remove_num)
     df[review] = df[review].apply(remove_symbols)
     df[review] = df[review].apply(remove_punctuation)
-    #df[review] = df[review].apply(remove_stopword)
+    df[review] = df[review].apply(remove_stopword)
     #df[review] = df[review].apply(stemming)
     df[review] = df[review].apply(remove_EAR)
     df[review] = df[review].apply(unify_whitespaces)

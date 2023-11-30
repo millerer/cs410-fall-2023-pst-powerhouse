@@ -3,13 +3,14 @@ import numpy as np
 from rank_bm25 import BM25Okapi
 
 
-def rank_dataset(dataset, query):
+def rank_dataset(dataset, query, count=10):
     """
     Ranking function for a dataset. Based on the Okapi BM25 algorithm.
 
     Args:
         dataset: A clean dataset (stopwords removed, all lowercase, stemming performed, etc)
         query: User query for searching the dataset
+        count: Number of top n results to return (default 10)
 
     Returns:
         The dataset sorted by an additional 'rank' column in desc order
@@ -32,4 +33,4 @@ def rank_dataset(dataset, query):
 
     # Return the dataset sorted by 'rank' in desc order
     ranked_results = df.groupby(['app_name'], as_index=False).agg(rank=('rank', 'sum'))
-    return ranked_results.sort_values(by='rank', ascending=False)
+    return ranked_results.sort_values(by='rank', ascending=False).head(count)

@@ -1,5 +1,5 @@
 import pandas as pd
-from flair_predict import predict
+from FlairSentimentAnalysis.flair_predict import predict
 from concurrent.futures import ThreadPoolExecutor
 import argparse
 import sys
@@ -46,7 +46,7 @@ def main(game_titles, input_file, num_threads, sample_size):
     df_avg_sentiment = sampled_df.groupby('app_name').apply(calculate_avg_sentiment).reset_index()
     df_avg_sentiment.columns = ['app_name', 'avg_sentiment']
 
-    print(df_avg_sentiment)
+    # print(df_avg_sentiment)
     return df_avg_sentiment
 
 if __name__ == "__main__":
