@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PST Powerhouse - Video Games Recommendation</title>
+  <!-- Include FontAwesome library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+	/* Add your CSS styles for the headers, boxes, and table here */
+	body {
+	  font-family: "Arial", sans-serif; /* Change the font family as needed */
+	  margin: 0;
+	  padding: 0;
+	  text-align: center; /* Center align the content */
+	}
+
+	header {
+	  background-color: #000; /* pitch black color */
+	  color: white;
+	  padding: 10px;
+	}
+
+	h1, h2 {
+	  margin: 10px;
+	}
+
+	/* Add styles for the icon before and after the title */
+	h2::before,
+	h2::after {
+	  content: "\1F3AE"; /* Unicode for a game controller icon */
+	  font-size: 36px; /* Adjust the size as needed */
+	  margin: 0 10px; /* Adjust the spacing as needed */
+	}
+
+	/* Add styles for the rectangular boxes */
+	.box-container {
+	  display: flex;
+	  justify-content: center;
+	  flex-wrap: wrap;
+	}
+
+	.box {
+	  width: 25%;
+	  margin: 10px;
+	  padding: 20px;
+	}
+
+	.coral-red {
+	  background-color: #FF6F61; /* Coral red color */
+	  color: white;
+	}
+
+	.sky-blue {
+	  background-color: #87CEEB; /* Sky blue color */
+	  color: white;
+	}
+
+	.light-orange {
+	  background-color: #FFD700; /* Light orange color */
+	  color: white;
+	}
+
+	/* Add styles for icons */
+	.box i {
+	  font-size: 36px; /* Adjust the size as needed */
+	  margin-bottom: 10px;
+	}
+
+	/* Customize font size and family for box text */
+	.box h3 {
+	  font-size: 18px; /* Adjust the font size as needed */
+	  font-family: "Verdana", sans-serif; /* Change the font family as needed */
+	}
+
+	/* Add styles for the centered summary table */
+	#summaryData {
+	  margin: 0 auto; /* Center the element */
+	  text-align: center; /* Center text inside the element */
+	  width: 70%; /* Adjust the width as needed */
+	  display: block; /* Ensure block-level display */
+	}
+
+	/* Add styles for the table */
+	table {
+	  border-collapse: collapse;
+	  width: 50%;
+	  margin-top: 20px;
+	}
+
+	th, td {
+	  border: 1px solid black;
+	  padding: 8px;
+	  text-align: center;
+	}
+
+  </style>
+  <script>
+    // Function to load and update values from parameter.txt
+    function loadParameterValues() {
+      // Use Fetch API to load parameter values from GitHub Raw URL
+      fetch("https://raw.githubusercontent.com/srijayashree/CS410/main/parameter.txt")
+        .then(response => response.text())
+        .then(data => {
+          // Parse the data as key-value pairs if needed
+          const keyValuePairs = data.split('\n').map(line => line.split('=').map(item => item.trim()));
+          const parameters = Object.fromEntries(keyValuePairs);
+
+          // Update values in HTML
+          document.getElementById('totalGamesReviewed').textContent = parameters.total_games_reviewed;
+          document.getElementById('totalReviewTextAnalyzed').textContent = parameters.total_review_text_analyzed;
+          document.getElementById('totalUsers').textContent = parameters.total_users;
+        })
+        .catch(error => {
+          console.error('Error loading parameter values:', error);
+          // Handle errors, e.g., show an error message in the HTML
+          document.getElementById('totalGamesReviewed').textContent = 'Error loading data';
+          document.getElementById('totalReviewTextAnalyzed').textContent = 'Error loading data';
+          document.getElementById('totalUsers').textContent = 'Error loading data';
+        });
+    }
+
+    // Call the function when the page is loaded
+    window.addEventListener('load', loadParameterValues);
+
+    // Function to format and display summary data
+    function formatSummaryData(data) {
+      const lines = data.split('\n');
+      const headers = lines[0].split(',').map(header => header.trim()); // Trim spaces from headers
+
+      // Create a table with headers
+      let tableHTML = '<table>';
+      tableHTML += '<tr>';
+      headers.forEach(header => {
+        tableHTML += `<th>${header}</th>`;
+      });
+      tableHTML += '</tr>';
+
+      // Add rows to the table
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(value => value.trim()); // Trim spaces from values
+        tableHTML += '<tr>';
+        values.forEach(value => {
+          tableHTML += `<td>${value}</td>`;
+        });
+        tableHTML += '</tr>';
+      }
+
+      tableHTML += '</table>';
+      return tableHTML;
+    }
+
+    // Function to load and update values from summary.csv
+    function loadSummaryData() {
+      // Use Fetch API to load summary data from GitHub Raw URL
+      fetch("https://raw.githubusercontent.com/srijayashree/CS410/main/summary.csv")
+        .then(response => response.text())
+        .then(data => {
+          // Display the file content in a div with id 'summaryData'
+          document.getElementById('summaryData').innerHTML = formatSummaryData(data);
+        })
+        .catch(error => {
+          console.error('Error loading summary data:', error);
+          // Handle errors, e.g., show an error message in the HTML
+          document.getElementById('summaryData').textContent = 'Error loading data';
+        });
+    }
+
+    // Call the function when the page is loaded
+    window.addEventListener('load', loadSummaryData);
+  </script>
+</head>
+<body>
+
+  <header>
+    <h1>PST Powerhouse</h1>
+    <h2>Video Games Recommendation</h2>
+  </header>
+
+  <!-- Rectangular boxes section -->
+  <div class="box-container">
+
+    <div class="box coral-red">
+      <i class="fas fa-gamepad"></i>
+      <h3>Total Games Reviewed</h3>
+      <p id="totalGamesReviewed">Loading...</p>
+    </div>
+
+    <div class="box sky-blue">
+      <i class="fas fa-comments"></i>
+      <h3>Total Review Text Analyzed</h3>
+      <p id="totalReviewTextAnalyzed">Loading...</p>
+    </div>
+
+    <div class="box light-orange">
+      <i class="fas fa-users"></i>
+      <h3>Total Users</h3>
+      <p id="totalUsers">Loading...</p>
+    </div>
+
+  </div>
+
+  <!-- Display the summary data -->
+  <div id="summaryData"></div>
+
+</body>
+</html>
