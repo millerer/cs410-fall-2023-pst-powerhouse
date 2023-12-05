@@ -8,7 +8,7 @@ BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_PATH)
 
 import FlairSentimentAnalysis.predict_game_reviews_sentiments as predict_sentiment
-from dataIngestion.dataset_clean import cleaning
+from dataIngestion.dataset_clean import cleaning, remove_stopword
 from dataRanking.rank_dataset import rank_dataset
 
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         exit()
 
     # Get the query
-    query = sys.argv[1].lower()
+    query = remove_stopword(sys.argv[1].lower())
     print('Received Query "%s"' %(query))
 
     # Get the data
