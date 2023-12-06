@@ -17,7 +17,6 @@ if __name__ == '__main__':
     p = 0.02
     review = pandas.read_csv('../dataIngestion/dataset.csv', skiprows=lambda i: i > 0 and random.random() > p)
     review.review_text = review.review_text.astype('str')
-    nltk.download('stopwords')
     cleaning(review, 'review_text')
 
     # Get the query

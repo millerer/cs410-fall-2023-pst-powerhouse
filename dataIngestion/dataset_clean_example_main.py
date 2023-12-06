@@ -32,7 +32,6 @@ if __name__ == '__main__':
     print("Shape before cleaning : " + str(review.shape))
 
     # Below code are to clean data.
-    #nltk.download('stopwords')
     cleaning(review, 'review_text')
     # Drop the rows with too short review_text. Feel free to Change the minimum len, 1,  as you like.
     review = review[review['review_text'].map(len) > 1]
