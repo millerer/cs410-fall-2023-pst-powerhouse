@@ -40,18 +40,14 @@ def build_qrels(sourceFilePath):
     return df
 
 if __name__ == '__main__':
-    ## Create a dataset in the game review format from cranfield data
-    cranfield = build_dataset('data/cranfield_data.txt')
+    ## Create a dataset in the game review format from review data
+    reviews = build_dataset('data/test_reviews.txt')
 
     ## Parse the queries
-    queries = build_queries('data/cranfield_queries.txt')
+    queries = build_queries('data/test_queries.txt')
 
     ## Parse the 'qrels' data (query_number, doc_number, relevancy)
     qrels = build_qrels('data/test_qrels.csv')
-
-    ## Clean the document text
-    nltk.download('stopwords')
-    cleaning(cranfield, 'review_text')
 
     ## Measure the precision, recall, and f-1 for each query
     precision_values = []
@@ -61,8 +57,8 @@ if __name__ == '__main__':
     for query in queries.to_numpy():
         query_number = query[0]
         query_text = query[1].lower()
-        result = rank_dataset(cranfield, query_text, len(cranfield)-1)
-        threshold = 10
+        result = rank_dataset(reviews, query_text, len(reviews)-1)
+        threshold = 0
 
         tp = 0 # true positive count
         tn = 0 # true negative count
@@ -90,16 +86,17 @@ if __name__ == '__main__':
             precision = tp/(tp+fp)
             recall = tp/(tp+fn)
             f1_measure =  (2*precision*recall)/(precision + recall)
-
             precision_values.append(precision)
             recall_values.append(recall)
             fmeasure_values.append(f1_measure)
-        else:
-            precision_values.append(0)
-            recall_values.append(0)
+        elif(fp > 0 or fn > 1):
             fmeasure_values.append(0)
+            if(fp > 1):
+                precision_values.append(0)
+            if(fn > 1):
+                recall_values.append(0)
     
-    ## print the average precision, recall, and F1 Measure for all queries
+    ## print the macro average precision, recall, and F1 Measure for all queries
     avg_precision = sum(precision_values)/len(precision_values)
     avg_recall = sum(recall_values)/len(recall_values)
     avg_fmeasure = sum(fmeasure_values)/len(fmeasure_values)
