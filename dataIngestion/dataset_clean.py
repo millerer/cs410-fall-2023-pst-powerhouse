@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import nltk
 import os
+import ssl
 
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
@@ -80,6 +81,14 @@ def remove_EAR(x):
 def cleaning(df, review):
     """ Main cleaning function that combining all """
     if not os.path.exists(os.path.expanduser('~/nltk_data')):
+        # This is to workaround NLTK downloading error due to SSL certificate. Refer to https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed
+        try:
+            _create_unverified_https_context = ssl._create_unverified_context
+        except AttributeError:
+            pass
+        else:
+            ssl._create_default_https_context = _create_unverified_https_context
+        # Download stopwords if not already.
         nltk.download('stopwords')
     df[review] = df[review].apply(clean_hyperlinks_and_markup)
     df[review] = df[review].apply(deEmojify)
