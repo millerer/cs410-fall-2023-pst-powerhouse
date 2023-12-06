@@ -20,7 +20,7 @@ def build_dataset(sourceFilePath):
 
     df = pd.DataFrame(lines, columns=["review_text"])
     df['review_text'] = df['review_text'].astype('str')
-    df.insert(0, 'app_name', range(1, 1+ len(df)))
+    df.insert(0, 'app_name', range(1, len(df)+1))
     return df
 
 def build_queries(sourceFilePath):
@@ -32,7 +32,7 @@ def build_queries(sourceFilePath):
     df = pd.DataFrame(lines, columns=["query_text"])
     df['query_text'] = df['query_text'][:-1].astype('str') #remove trailing newline
     df = df.dropna(thresh=1)
-    df.insert(0, 'query_number', range(1, 1+ len(df)))
+    df.insert(0, 'query_number', range(1, len(df)+1))
     return df
 
 def build_qrels(sourceFilePath):
@@ -60,9 +60,9 @@ if __name__ == '__main__':
 
     for query in queries.to_numpy():
         query_number = query[0]
-        query_text = remove_stopword(query[1].lower())
+        query_text = query[1].lower()
         result = rank_dataset(cranfield, query_text, len(cranfield)-1)
-        threshold = result.iloc[10]['rank'] # threshold for relevancy classification
+        threshold = 10
 
         tp = 0 # true positive count
         tn = 0 # true negative count
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
             relevant_docs = qrels.loc[qrels['query_number'] == query_number]
             is_relevant = len(relevant_docs.loc[relevant_docs['document_number'] == app_name]) > 0
-            guessed_relevant = rank >= threshold
+            guessed_relevant = rank > threshold
 
             if(is_relevant and guessed_relevant):
                 tp += 1
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             elif(not is_relevant and guessed_relevant):
                 fp += 1
             else:
-                tn += 1
+                fn += 1
             
         if tp > 0:
             precision = tp/(tp+fp)
@@ -104,5 +104,5 @@ if __name__ == '__main__':
     avg_recall = sum(recall_values)/len(recall_values)
     avg_fmeasure = sum(fmeasure_values)/len(fmeasure_values)
 
-    print("Average Precision: {}, Average Recall: {}. Average F1 Measure: {}" \
+    print("Macro Average Precision: {}, Macro Average Recall: {}, Macro Average F1 Measure: {}" \
         .format(avg_precision,avg_recall,avg_fmeasure))
