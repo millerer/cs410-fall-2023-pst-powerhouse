@@ -1,9 +1,9 @@
 import pandas as pd
 import re
 import nltk
+import os
+import ssl
 
-from nltk import WordNetLemmatizer
-from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 
@@ -58,14 +58,9 @@ def remove_punctuation(text):
     final = "".join(u for u in text if u not in ("?", ".", ";", ":", "!", '"', ','))
     return final
 
-
-stop = set(stopwords.words("english"))
-stemmer = PorterStemmer()
-lemma = WordNetLemmatizer()
-
-
 def remove_stopword(text):
     """ Remove stopwords """
+    stop = set(stopwords.words("english"))
     text = [word.lower() for word in text.split() if word.lower() not in stop]
     return " ".join(text)
 
@@ -85,13 +80,23 @@ def remove_EAR(x):
 
 def cleaning(df, review):
     """ Main cleaning function that combining all """
+    if not os.path.exists(os.path.expanduser('~/nltk_data')):
+        # This is to workaround NLTK downloading error due to SSL certificate. Refer to https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed
+        try:
+            _create_unverified_https_context = ssl._create_unverified_context
+        except AttributeError:
+            pass
+        else:
+            ssl._create_default_https_context = _create_unverified_https_context
+        # Download stopwords if not already.
+        nltk.download('stopwords')
     df[review] = df[review].apply(clean_hyperlinks_and_markup)
     df[review] = df[review].apply(deEmojify)
     df[review] = df[review].str.lower()
     df[review] = df[review].apply(remove_num)
     df[review] = df[review].apply(remove_symbols)
     df[review] = df[review].apply(remove_punctuation)
-    #df[review] = df[review].apply(remove_stopword)
+    df[review] = df[review].apply(remove_stopword)
     #df[review] = df[review].apply(stemming)
     df[review] = df[review].apply(remove_EAR)
     df[review] = df[review].apply(unify_whitespaces)

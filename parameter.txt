@@ -1,0 +1,3 @@
+total_games_reviewed = 67
+total_review_text_analyzed = 18675
+total_users = 2700
