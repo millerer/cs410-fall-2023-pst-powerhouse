@@ -50,4 +50,4 @@ if __name__ == '__main__':
     result = pd.merge(result, sentiment[['avg_sentiment','app_name']], on='app_name')
     result = result.sort_values(by='rank', ascending=False)
     # print(result)
-    write_csv('summary.csv', result)
+    # write_csv('summary.csv', result)
