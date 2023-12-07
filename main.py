@@ -18,13 +18,6 @@ def write_csv(file_name, data):
 
 
 def calculate_list(query):
-    # Expects a command line argument for the query. Use quotes if the query contains whitespace/more than one word
-    # if len(sys.argv) < 2:
-    #     print('query required')
-    #     exit()
-    #
-    # # Get the query
-    # query = sys.argv[1].lower()
     print('Received Query "%s"' % (query))
 
     # Get the data
