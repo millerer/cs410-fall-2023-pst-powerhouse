@@ -89,11 +89,11 @@ if __name__ == '__main__':
             precision_values.append(precision)
             recall_values.append(recall)
             fmeasure_values.append(f1_measure)
-        elif(fp > 0 or fn > 1):
+        elif(fp > 0 or fn > 0):
             fmeasure_values.append(0)
-            if(fp > 1):
+            if(fp > 0):
                 precision_values.append(0)
-            if(fn > 1):
+            if(fn > 0):
                 recall_values.append(0)
     
     ## print the macro average precision, recall, and F1 Measure for all queries
