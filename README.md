@@ -26,6 +26,19 @@ For recommendations, flair sentiment analysis is implemented and applied to the 
 For GUI, JScript is used to implement the webpage hosting service.
 [TODO - Add more details how the software is implemented here]
 
+### Testing of sentiment analysis
+In order to improve the query performance of the search engine, we utilized a random sample of game reviews with a specified size, denoted as N, for calculating the average sentiment of game titles. Employing the entire set of reviews for each game title would be too time-consuming, so we opted for a N value of 10 to ensure quick query turnaround time. 
+
+Subsequently, we conducted a comparative analysis to calculate the average sentiment values with two different sample sizes: a much larger N value of 100 and our chosen N value of 10 to assess the variations in average sentiment across all game titles in the dataset. The average of the differences across all game titles turned out to be 0.011, which is quite small. The distributions of the differences in average sentiment scores are presented below:
+
+![Sentiment Differences Histogram](/FlairSentimentAnalysis/output/N100-N10_sentiment_distributions.png)
+
+Please refer to `sentimentTest/compare_avg_sentiment.ipynb` for the full analysis. In order to generate the average sentiment values for all game titles with a given N value, use the `FlairSentimentAnalysis\avg_sentiment_for_all_games.py` script:
+
+~~~~
+python FlairSentimentAnalysis\avg_sentiment_for_all_games.py --input [dataIngestion/dataset.csv] --output [output .csv file path] --threads [number of threads] -N [N value]
+~~~~
+
 ## 3. Usage of the software
 ### 3.1 How to install
 1. This requires python 3.9+ to run. (Later version may still work, but unverified). Please download Python installer from https://www.python.org/downloads/release/python-390/
