@@ -1,9 +1,8 @@
 import pandas as pd
 import re
 import nltk
+import os
 
-from nltk import WordNetLemmatizer
-from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 
@@ -58,14 +57,9 @@ def remove_punctuation(text):
     final = "".join(u for u in text if u not in ("?", ".", ";", ":", "!", '"', ','))
     return final
 
-
-stop = set(stopwords.words("english"))
-stemmer = PorterStemmer()
-lemma = WordNetLemmatizer()
-
-
 def remove_stopword(text):
     """ Remove stopwords """
+    stop = set(stopwords.words("english"))
     text = [word.lower() for word in text.split() if word.lower() not in stop]
     return " ".join(text)
 
@@ -85,6 +79,8 @@ def remove_EAR(x):
 
 def cleaning(df, review):
     """ Main cleaning function that combining all """
+    if not os.path.exists(os.path.expanduser('~/nltk_data')):
+        nltk.download('stopwords')
     df[review] = df[review].apply(clean_hyperlinks_and_markup)
     df[review] = df[review].apply(deEmojify)
     df[review] = df[review].str.lower()
