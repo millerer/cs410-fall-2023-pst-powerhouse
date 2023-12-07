@@ -1,2 +1,3 @@
 dataIngestion/dataset.csv
 **/__pycache__
+**/summary.csv
