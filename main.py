@@ -16,15 +16,9 @@ def write_csv(file_name, data):
     """ write a dataframe to a csv file """
     data.to_csv(file_name, index=False)
 
-if __name__ == '__main__':
-    # Expects a command line argument for the query. Use quotes if the query contians whitespace/more than one word
-    if len(sys.argv) < 2:
-        print('query required')
-        exit()
 
-    # Get the query
-    query = sys.argv[1].lower()
-    print('Received Query "%s"' %(query))
+def calculate_list(query):
+    print('Received Query "%s"' % (query))
 
     # Get the data
     print('Getting data set...')
@@ -50,4 +44,5 @@ if __name__ == '__main__':
     result = pd.merge(result, sentiment[['avg_sentiment','app_name']], on='app_name')
     result = result.sort_values(by='rank', ascending=False)
     # print(result)
-    # write_csv('summary.csv', result)
+
+    return result
