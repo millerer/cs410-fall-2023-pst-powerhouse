@@ -10,7 +10,7 @@ This is the group project repository for team PST Powerhouse. It is a recommenda
 | Project Proposal | See: [Team PST Powerhouse Project Proposal.pdf](https://github.com/millerer/cs410-fall-2023-pst-powerhouse/blob/main/Team%20PST%20Powerhouse%20Project%20Proposal.pdf) |
 
 ## 1. An overview of the function of the code
-This project is a video game recommendation system which provides a list of game titles based on a user's query and the reviewer sentiment for each game (positive sentiment giving a higher weight).
+This project is a video game recommendation system which provides a list of game titles based on a user's query and the reviewer sentiment for each game.
 Upon entering a query related to the domain of video games, users will receive a ranked list of topK (10) video game titles ranked on relevance to their query and positive reviewer sentiment.
 * dataIngestion - A component for data ingestion and data cleaning.
 * dataRanking - A ranking implementation by Okapi BM25
@@ -21,10 +21,9 @@ The Python language is utilized for implementing functions, leveraging popular l
 We developed the data cleaning code in-house, which involves the removal of unnecessary hyperlinks, markup, numbers, symbols, punctuation, and stop words. 
 Additionally, we apply stemming, convert to lowercase, and standardize whitespaces. We successfully eliminated a specific high-frequency term, "Early Access Review," 
 resulting in a significant improvement in accuracy through these data cleaning techniques.
-Concerning the ranking process, we tokenize the corpus and input it into the bm25 ranking algorithm to generate scores. 
+Concerning the ranking process, we tokenize the corpus and input it into the bm25 ranking algorithm to generate scores. Ranking scores are calculated for each of the reviews, then aggregated for each game title.
 For recommendations, flair sentiment analysis is implemented and applied to the sentences in the corpus reviews. Ultimately, the top 10 games are generated based on positive sentiment and the highest ranked scores.
 For GUI, JScript is used to implement the webpage hosting service.
-[TODO - Add more details how the software is implemented here]
 
 ### Testing of sentiment analysis
 In order to improve the query performance of the search engine, we utilized a random sample of game reviews with a specified size, denoted as N, for calculating the average sentiment of game titles. Employing the entire set of reviews for each game title would be too time-consuming, so we opted for a N value of 10 to ensure quick query turnaround time. 
@@ -38,6 +37,15 @@ Please refer to `sentimentTest/compare_avg_sentiment.ipynb` for the full analysi
 ~~~~
 python FlairSentimentAnalysis\avg_sentiment_for_all_games.py --input [dataIngestion/dataset.csv] --output [output .csv file path] --threads [number of threads] -N [N value]
 ~~~~
+
+### Testing of Retrieval Performance
+In order to judge our game title ranker's retrival performance, we used a variation of the cranfield relevancy experiments. A set of ten queries (`test_queries.txt`) was manually compared against a sampling of 500 reviews (`test_reviews.txt`) for relevancy. The results from this manual 'ideal result' set were then recorded into a file (`test_qrels.csv`). We then created a test script that compared the expected relevant documents to documents that the ranking function claimed were relevant (threshold of 0 being used for relevancy). Calculating the macro average precision, recall, and F1 score had the following results:
+```
+Macro Average Precision: 0.9702380952380951, Macro Average Recall: 0.5586309523809524, Macro Average F1 Measure: 0.6421254399195576
+```
+The macro average precision was very high for the query set, with a lower recall. This gives us confidence that retrieved documents will likely be relevant to a query, but that some relevant results may be missed. Further manual testing of the application against the entirety of the corpus seemed to indicate that this was the case. However given the huge size of the dataset, missing some relevant results is not as large a concern.
+
+To run the tests for retrieval, use the `retieval_test.py` script.
 
 ## 3. Usage of the software
 ### 3.1 How to install
@@ -62,32 +70,16 @@ You have to exact and save it to dataIngestion/ folder in your cloned git projec
 ````
 % unzip ~/Downloads/archive.zip -d dataIngestion/
 ````
-5. Run the ranking example program in command line.
+5. Run the ranking program from the command line.
 ````
-% cd cs410-fall-2023-pst-powerhouse/dataRanking
-% python3 rank_dataset_example.py <YOUR_QUERY>
+% cd cs410-fall-2023-pst-powerhouse
+% python3 UI.py
 ````
-Here below shows an example of ranked output for query `Monday`.
-````
- % python3 rank_dataset_example.py Monday
-Cleaning data...
-Ranking....
-Top 10 ranked reviews + title
-                        app_name       rank
-4783   Super Monday Night Combat  21.360585
-3543                    POSTAL 2  20.445648
-3903             Randal's Monday  16.469592
-461                 Awesomenauts  13.273520
-1210                        DOOM   8.215752
-5822  Yet Another Zombie Defense   7.633979
-3665                PlanetSide 2   7.423704
-3175         Monday Night Combat   7.036092
-2767                        LYNE   7.036092
-3093                     Memoria   6.525055
-````
+Here below shows an example of ranked output for query `France`.
+![Example Query Results](/ui_example.jpg)
 
 ### 3.2 How to run the program
-As a user, you can input your query from our UI webpage. [TODO add UI link here]. 
+As a user, you can input your query from our UI page. Run `UI.py` from the root directory. You can veiw the actions of the backend from the console. 
 It gives you the recommendation of games relevant to your query.
 
 ## 4. Contribution of each team member
