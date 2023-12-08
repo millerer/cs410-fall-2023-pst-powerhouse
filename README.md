@@ -23,7 +23,7 @@ Additionally, we apply stemming, convert to lowercase, and standardize whitespac
 resulting in a significant improvement in accuracy through these data cleaning techniques.
 Concerning the ranking process, we tokenize the corpus and input it into the bm25 ranking algorithm to generate scores. Ranking scores are calculated for each of the reviews, then aggregated for each game title.
 For recommendations, flair sentiment analysis is implemented and applied to the sentences in the corpus reviews. Ultimately, the top 10 games are generated based on positive sentiment and the highest ranked scores.
-For GUI, JScript is used to implement the webpage hosting service.
+For GUI, tkinter is used to implement the webpage hosting service.
 
 ### Testing of sentiment analysis
 In order to improve the query performance of the search engine, we utilized a random sample of game reviews with a specified size, denoted as N, for calculating the average sentiment of game titles. Employing the entire set of reviews for each game title would be too time-consuming, so we opted for a N value of 10 to ensure quick query turnaround time. 
