@@ -19,6 +19,7 @@ def write_csv(file_name, data):
 
 def calculate_list(query):
     print('Received Query "%s"' % (query))
+    query = query.lower()
 
     # Get the data
     print('Getting data set...')
