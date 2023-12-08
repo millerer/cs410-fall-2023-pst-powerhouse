@@ -10,7 +10,7 @@ This is the group project repository for team PST Powerhouse. It is a recommenda
 | Project Proposal | See: [Team PST Powerhouse Project Proposal.pdf](https://github.com/millerer/cs410-fall-2023-pst-powerhouse/blob/main/Team%20PST%20Powerhouse%20Project%20Proposal.pdf) |
 
 # Video Tutorial
-[Use this link for the video tutorial for this project](https://www.youtube.com/watch?v=mq-7_20n9X0). Covers the project contents, setup, and example query.
+[Use this link for the video tutorial](https://www.youtube.com/watch?v=mq-7_20n9X0). This video covers the project contents, setup, and shows an example query.
 
 ## 1. An overview of the function of the code
 This project is a video game recommendation system which provides a list of game titles based on a user's query and the reviewer sentiment for each game.
